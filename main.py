@@ -1,5 +1,7 @@
 import random
 # Define a dictionary to hold the Item names and probabilities
+
+random.seed(random.randint(1, 100))
 items = {
     "Hanzo Kabuto": 0.0002,
     "Hanzo Yori": 0.0002,
@@ -172,4 +174,24 @@ probabilities = calculate_probability(runs)
 # Print the results to the console
 for item, data in probabilities.items():
     observed_prob, picks, total_picks = data
-    print(f"Probability of {item}: {observed_prob * 100:.10f}% ({picks}/{total_picks} picks)")
+    print(f"Probability of {item}: {observed_prob * 100:.4f}% ({picks}/{total_picks} picks)")
+
+
+def calculate_probability_until_item(target_item):
+    observed_counts = {item: 0 for item in items}
+    run_count = 0
+    while True:
+        run_count += 1
+        picked_item = generate_item()
+        observed_counts[picked_item] += 1
+
+        if picked_item == target_item:
+            break
+
+    return run_count, observed_counts
+
+
+target = "Golden Warrior"
+runs_needed, observed_counts = calculate_probability_until_item(target)
+
+print(f"It took {runs_needed} runs to get {target}.")
